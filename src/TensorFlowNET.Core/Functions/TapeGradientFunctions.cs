@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -100,7 +101,7 @@ namespace Tensorflow.Functions
                         break;
                 }
 
-                tf.Logger.Debug($"Invoke backward function: {backward.Name}");
+                tf.Logger.LogDebug($"Invoke backward function: {backward.Name}");
                 var gradients = backward.CallFlat(processed_args, remapped_captures);
 
                 foreach (var unneeded_gradient_index in unneeded_gradients)

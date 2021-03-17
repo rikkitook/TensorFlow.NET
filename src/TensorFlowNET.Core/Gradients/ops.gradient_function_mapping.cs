@@ -14,6 +14,7 @@
    limitations under the License.
 ******************************************************************************/
 
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,14 +50,14 @@ namespace Tensorflow
                         RegisterGradientFunction(m.GetCustomAttribute<RegisterGradient>().Name,
                             (oper, out_grads) =>
                             {
-                                tf.Logger.Debug($"Caculate Gradient: {oper.name} {m.Name}");
+                                tf.Logger.LogDebug($"Caculate Gradient: {oper.name} {m.Name}");
                                 var results = g.InvokeMember(m.Name,
                                    BindingFlags.InvokeMethod,
                                    null,
                                    null,
                                    args: new object[] { oper, out_grads }) as Tensor[];
                                 foreach (var result in results.Where(x => x != null))
-                                    tf.Logger.Debug($"Gradient: {result.name} {result.TensorShape}");
+                                    tf.Logger.LogDebug($"Gradient: {result.name} {result.TensorShape}");
                                 return results;
                             }
                         );

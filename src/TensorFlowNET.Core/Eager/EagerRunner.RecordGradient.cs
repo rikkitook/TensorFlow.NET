@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using Tensorflow.Gradients;
 using static Tensorflow.Binding;
@@ -40,7 +41,7 @@ namespace Tensorflow.Eager
             }
             
             if (!should_record) return should_record;
-            tf.Logger.Debug($"RecordGradient: op_name={op_name}");
+            tf.Logger.LogDebug($"RecordGradient: op_name={op_name}");
 
             Tensor[] op_outputs;
 #pragma warning disable CS0219 // Variable is assigned but its value is never used

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using Tensorflow.Util;
 using static Tensorflow.Binding;
@@ -43,7 +44,7 @@ namespace Tensorflow.Gradients
             if (!CouldBackprop())
                 return;
 
-            tf.Logger.Debug($"Watch tensor_id={tensor_id}");
+            tf.Logger.LogDebug($"Watch tensor_id={tensor_id}");
             tensor_tape_.emplace(tensor_id, -1);
         }
 
