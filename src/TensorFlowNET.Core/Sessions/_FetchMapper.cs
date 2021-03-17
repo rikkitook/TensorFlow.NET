@@ -28,9 +28,9 @@ namespace Tensorflow
             var fetches = fetch.GetType().IsArray ? (object[])fetch : new object[] { fetch };
 
             if (fetch is List<string> fetches1)
-                return new _ListFetchMapper(fetches1.ToArray());
+                return new _ListFetchMapper(fetches1.ToArray(), graph: graph);
             if (fetch.GetType().IsArray)
-                return new _ListFetchMapper(fetches);
+                return new _ListFetchMapper(fetches, graph: graph);
             else
                 return new _ElementFetchMapper(fetches, (List<NDArray> fetched_vals) => fetched_vals[0], graph: graph);
         }

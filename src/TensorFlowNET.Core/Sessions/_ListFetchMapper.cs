@@ -24,9 +24,9 @@ namespace Tensorflow
     {
         private _FetchMapper[] _mappers;
 
-        public _ListFetchMapper(object[] fetches)
+        public _ListFetchMapper(object[] fetches, Graph graph = null)
         {
-            _mappers = fetches.Select(fetch => _FetchMapper.for_fetch(fetch)).ToArray();
+            _mappers = fetches.Select(fetch => _FetchMapper.for_fetch(fetch, graph: graph)).ToArray();
             (_unique_fetches, _value_indices) = _uniquify_fetches(_mappers);
         }
 
