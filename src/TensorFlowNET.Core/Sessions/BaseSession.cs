@@ -236,24 +236,25 @@ namespace Tensorflow
             // Ensure any changes to the graph are reflected in the runtime.
             _extend_graph();
 
-            var status = tf.Status;
-
             var output_values = fetch_list.Select(x => IntPtr.Zero).ToArray();
 
-            c_api.TF_SessionRun(_handle,
-                run_options: null,
-                inputs: feed_dict.Select(f => f.Key).ToArray(),
-                input_values: feed_dict.Select(f => (IntPtr)f.Value).ToArray(),
-                ninputs: feed_dict.Length,
-                outputs: fetch_list,
-                output_values: output_values,
-                noutputs: fetch_list.Length,
-                target_opers: target_list.Select(f => (IntPtr)f).ToArray(),
-                ntargets: target_list.Count,
-                run_metadata: IntPtr.Zero,
-                status: status.Handle);
-
-            status.Check(true);
+            using (var status = new Status())
+            {
+                c_api.TF_SessionRun(_handle,
+                    run_options: null,
+                    inputs: feed_dict.Select(f => f.Key).ToArray(),
+                    input_values: feed_dict.Select(f => (IntPtr)f.Value).ToArray(),
+                    ninputs: feed_dict.Length,
+                    outputs: fetch_list,
+                    output_values: output_values,
+                    noutputs: fetch_list.Length,
+                    target_opers: target_list.Select(f => (IntPtr)f).ToArray(),
+                    ntargets: target_list.Count,
+                    run_metadata: IntPtr.Zero,
+                    status: status.Handle);
+                
+                status.Check(true);
+            }
 
             var result = new NDArray[fetch_list.Length];
 
